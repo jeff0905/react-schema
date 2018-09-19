@@ -19,7 +19,6 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import styles from "./basic.style";
 
-
 class Basic extends React.Component {
   state = {
     open: false,
