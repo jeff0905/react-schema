@@ -4,15 +4,24 @@
   "private": true,
   "homepage": "https://jeff0905.github.io/react-schema/",
   "dependencies": {
-    "@material-ui/core": "^3.1.0",
-    "@material-ui/icons": "^3.0.1",
+    "antd": "3.9.3",
     "classnames": "^2.2.6",
+    "connected-react-router": "^4.5.0",
     "d3": "^5.4.0",
+    "d3-drag": "^1.2.3",
     "d3-force": "^1.1.2",
     "d3-scale": "^2.1.2",
+    "d3-zoom": "^1.7.3",
+    "history": "^4.7.2",
+    "jsplumb": "^2.8.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.3.1",
+    "react-router-config": "^1.0.0-beta.4",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
+    "redux": "^4.0.0",
     "storm-react-diagrams": "^5.2.1"
   },
   "scripts": {
@@ -23,6 +32,8 @@
     "deploy": "gh-pages -d build"
   },
   "devDependencies": {
-    "gh-pages": "^2.0.0"
+    "babel-plugin-import": "^1.9.1",
+    "gh-pages": "^2.0.0",
+    "react-app-rewired": "^1.6.2"
   }
 }

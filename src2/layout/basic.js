@@ -17,6 +17,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import SearchIcon from '@material-ui/icons/Search';
 
+import { menu } from './menu';
+
 import styles from "./basic.style";
 
 class Basic extends React.Component {
@@ -99,11 +101,13 @@ class Basic extends React.Component {
             open={this.state.open}
           >
             <div className={classes.toolbarIcon}>
+              React
               <IconButton onClick={this.handleDrawerClose}>
-                <ChevronLeftIcon />
+                 <ChevronLeftIcon />
               </IconButton>
             </div>
             <Divider />
+            {menu}
           </Drawer>
           <main className={classes.content}>{children}</main>
         </div>

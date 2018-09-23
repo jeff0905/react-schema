@@ -1,21 +1,18 @@
-/* eslint-disable */
-import React, { Component } from 'react';
+import React from 'react';
+import { ConnectedRouter } from 'connected-react-router'
+
+// import routes from './Routes';
+import BasicLayout from './layouts/basic';
 // import logo from './logo.svg';
 import './App.css';
-import Basic from './layout/basic';
-import Schema from './pages/schema';
-import D3Schema from './pages/d3';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Basic>
-          <Schema />
-        </Basic>
-      </div>
-    );
-  }
+
+const App = ({ history }) => {
+  return (
+    <ConnectedRouter history={history}>
+      <BasicLayout />
+    </ConnectedRouter>
+  )
 }
 
 export default App;
