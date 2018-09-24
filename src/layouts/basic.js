@@ -3,6 +3,7 @@ import { Layout, Menu, Icon } from "antd";
 import { Link } from 'react-router-dom';
 import { Switch, Route } from "react-router";
 
+import G6Page from "./../pages/diagram/g6";
 import D3Page from "./../pages/diagram/d3";
 import Home from "./../pages/home";
 
@@ -38,7 +39,7 @@ export default class BasicLayout extends React.Component {
                     <span><Link to="/d3">d3首页</Link></span>
                 </Menu.Item>
                 <Menu.Item key="6">
-                    <span><Link to="/d3">mxGraph</Link></span>
+                    <span><Link to="/g6">g6</Link></span>
                 </Menu.Item>
                 <Menu.SubMenu key="sub3" title="Submenu">
                     <Menu.Item key="7">Option 7</Menu.Item>
@@ -71,6 +72,7 @@ export default class BasicLayout extends React.Component {
         <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/d3" component={D3Page} />
+            <Route path="/g6" component={G6Page} />
         </Switch>
           </Content>
         </Layout>

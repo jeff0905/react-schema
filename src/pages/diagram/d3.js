@@ -3,13 +3,15 @@ import React from 'react';
 // import CSSModules from 'react-css-modules';
 
 import * as d3 from "d3";
+import { drag } from "d3-drag";
+import "d3-scale";
 import styles from './d3.less';
 
 
 export default class D3Page extends React.Component {
 
     componentDidMount() {
-        this.init2();
+        this.drag();
     }
     init2() {
         var data = {
@@ -39,13 +41,13 @@ export default class D3Page extends React.Component {
             ]
           };
           function showArrayElements(data, title) {
-            d3.select('#content')
+            d3.select('#canvas')
               .append('div')
               .html('<span>' + title + '</span>: ' + data.map(function(d) {return d.data.name;}).join(', '))
           }
           
           function showLinkArrayElements(data, title) {
-            d3.select('#content')
+            d3.select('#canvas')
               .append('div')
               .html('<span>' + title + '</span>: ' + data.map(function(d) {return d.source.data.name + ' -> ' + d.target.data.name;}).join(', '))
           }
@@ -58,13 +60,138 @@ export default class D3Page extends React.Component {
           var path = root.path(root.children[0].children[1])
           var links = root.links()
           
-          showArrayElements(ancestors, "root.children[0].children[1].ancestors()")
-          showArrayElements(descendants, "root.descendants()")
-          showArrayElements(leaves, "root.leaves()")
-          showArrayElements(path, "root.path(root.children[0].children[1])")
-          showLinkArrayElements(links, "root.links()")
+          //showArrayElements(ancestors, "root.children[0].children[1].ancestors()")
+          //showArrayElements(descendants, "root.descendants()")
+          //showArrayElements(leaves, "root.leaves()")
+          //showArrayElements(path, "root.path(root.children[0].children[1])")
+          //showLinkArrayElements(links, "root.links()")
           
-          
+          function showTable(data,title) {
+              const tableEle = document.querySelectorAll('table');
+              console.log(tableEle);
+            //   const table = d3.selectAll('.table');
+            //   console.log(table.html());
+            //   const tablename = d3.select('.table-name');
+            //   const name_icon1 = d3.select('.table-name .icon1')
+            //   const name_icon2 = d3.select('.table-name .icon2')
+            //   const name_span = d3.select('.')
+            //   console.log(noDom);
+
+          }
+    }
+    drag() {
+      
+		var drag = d3.drag()
+						.on("drag", dragmove); 
+						
+		function dragmove(d) {	
+			d3.select(this)
+			  .attr("cx", d.cx = d3.event.x )
+			  .attr("cy", d.cy = d3.event.y );
+		}
+        var circles = [ { cx: 150, cy:200, r:30 },
+            { cx: 250, cy:200, r:30 },];
+
+        var svg = d3.select("#canvas");
+
+        svg.selectAll(".table")
+        .data(circles)
+        .enter()
+        .append("div")
+        .attr('class', 'table')
+        .attr("cx",function(d){ return d.cx; })
+        .attr("cy",function(d){ return d.cy; })
+        .attr("r",function(d){ return d.r; })
+        .attr("fill","black")
+        .call(drag);  //这里是刚才定义的drag行为
+    }
+    init3() {
+        var canvas = d3.select("canvas"),
+    context = canvas.node().getContext("2d"),
+    width = canvas.property("width"),
+    height = canvas.property("height"),
+    radius = 32;
+
+var circles = d3.range(20).map(function(i) {
+  return {
+    index: i,
+    x: Math.round(Math.random() * (width - radius * 2) + radius),
+    y: Math.round(Math.random() * (height - radius * 2) + radius)
+  };
+});
+
+// var color = d3.scaleOrdinal()
+//     .range(d3.schemeCategory20);
+
+render();
+
+canvas.call(d3.drag()
+    .subject(dragsubject)
+    .on("start", dragstarted)
+    .on("drag", dragged)
+    .on("end", dragended)
+    .on("start.render drag.render end.render", render));
+
+function render() {
+  context.clearRect(0, 0, width, height);
+  for (var i = 0, n = circles.length, circle; i < n; ++i) {
+    circle = circles[i];
+    context.beginPath();
+    context.moveTo(circle.x + radius, circle.y);
+    context.arc(circle.x, circle.y, radius, 0, 2 * Math.PI);
+    // context.fillStyle = color(circle.index);
+
+    context.fill();
+    if (circle.active) {
+      context.lineWidth = 2;
+      context.stroke();
+    }
+  }
+}
+
+function dragsubject() {
+  for (var i = circles.length - 1, circle, x, y; i >= 0; --i) {
+    circle = circles[i];
+    x = circle.x - d3.event.x;
+    y = circle.y - d3.event.y;
+    if (x * x + y * y < radius * radius) return circle;
+  }
+}
+
+function dragstarted() {
+  circles.splice(circles.indexOf(d3.event.subject), 1);
+  circles.push(d3.event.subject);
+  d3.event.subject.active = true;
+}
+
+function dragged() {
+  d3.event.subject.x = d3.event.x;
+  d3.event.subject.y = d3.event.y;
+}
+
+function dragended() {
+  d3.event.subject.active = false;
+}
+
+    }
+    // 1 by 1
+    insert1(tablename, columsn) {
+        
+        const table = d3.select('#canvas').append('div').attr('class', 'table')
+
+        // const tableName = table
+        //   .append('div')
+        //   .attr('class', 'table-name');
+        // tableName.append('i').attr('class', 'icon1');
+        // tableName.append('span').text('tableName');
+        // tableName.append('i').attr('class', 'icon2');
+
+        // const tableColumns = table.append('div').attr('class', 'table-columns');
+        // const tableColumn = tableColumns.append('div').attr('class', 'table-column');
+        // tableColumn.append('i').attr('class', 'icon1');
+        // tableColumn.append('span').text('columnName');
+        // tableColumn.append('i').attr('class', 'icon2');
+        
     }
     init() {
         // function zoomFn() { const { translate, scale } = d3.event; container.attr('transform', 'translate(' + translate + ')scale(' + scale * initScale + ')'); } function dragstartFn(d) { draging = true; d3.event.sourceEvent.stopPropagation(); force.start(); } function dragFn(d) { draging = true; d3.select(this) .attr('cx', d.x = d3.event.x) .attr('cy', d.y = d3.event.y); } function dragendFn(d) { draging = false; force.stop(); }
@@ -174,11 +301,72 @@ export default class D3Page extends React.Component {
         })
     }
     
+    handledrag = (e)  => {
+        console.log('begin drag', e);
+    }
+    handledrop = (e) => {
+        e.persist();
+        console.log('drop', e);
+        this.handleCreateGroup(e);
+    }
+    allowDrop = (e) => {
+        e.persist();
+        console.log('allowDrop', e);
+        e.preventDefault();
+    }
+    handleCreateGroup = (e) => {
+        console.log(
+            d3.select("#canvas"))
+        d3.select("#canvas")
+            .selectAll('.node')
+            .data([{x:0, y:0}])
+            .enter()
+            .append('g')
+            .attr("transform",function(d,i){
+                console.log(d, i, arguments);
+    			// var cirX = d.x;
+    			// var cirY = d.y;
+    			return "translate("+e.pageX+","+e.pageY+")";
+            })
+            .append('circle')
+            .attr('r', 20)
+            .attr('cx', e.pageX)
+            .attr('cy', e.pageY)
+            // drag 没有data().enter()没有效果...参数d没有值.
+            .call(d3.drag()
+                .on('start', start)
+                .on('drag', drag)
+                .on('end', end)
+            )
+        function start(d) {
+            console.log('d',d ,arguments);
+            d.fx = d.x;
+    		d.fy = d.y;
+        }
+        function drag(d) {
+            console.log('d',d ,arguments);
+            d.fx = d3.event.x;
+    		d.fy = d3.event.y;
+        }
+        function end(d) {
+            console.log('d',d ,arguments);
+        }
+
+    }
     render() {
         return (
-            <div styleName="d3page">
-                D3.....
-                <div id='canvas'></div>
+            <div className="d3page">
+                <div className="item">
+                    <ul>
+                        <li>
+                            <a draggable="true" onDragStart={this.handledrag}> 组</a>
+                        </li>
+                    </ul>
+                </div>
+                <div className="container" onDrop={this.handledrop} onDragOver={this.allowDrop}>
+                    <svg id='canvas'  width="960" height="500"></svg>
+                </div>
+
             </div>
         )
     }
